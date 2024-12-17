@@ -4,6 +4,7 @@ const userservice = require('../services/user.service');
 const usermodel = require('../models/user.models');
 
 
+// logic to register the user
 module.exports.registerUser = async(req,res,next)=>{
     // sending all the incomming data to the excpress validator to validation result
     const errors = validationResult(req);
@@ -18,14 +19,37 @@ module.exports.registerUser = async(req,res,next)=>{
     const hashPassword = await usermodel.hashPassword(password);
 
 
-
+    // sending the data to the user service
     const user = await userservice.createUser({
         firstname:fullname.firstname,
         lastname:fullname.lastname,
         email,
         password:hashPassword
     })
-
+    //generating the token 
     const token = user.generateAuthToken();
     res.status(201).json({token,user})
+}
+
+
+
+// logic to login the user
+module.exports.loginUser = async(req,res,next)=>{
+    const errors = validationResult(req);
+
+    if(!errors.isEmpty()){
+        return res.status(400).json({errors: errors.array()});
+    }
+    const {email,password} = req.body;
+    const user = await usermodel.findOne({email}).select('+password');
+    if(!user){
+        return res.status(401).json({error:'Invalid email or password'});
+    }
+
+    const isMatch = await user.comparePassword(password);
+    if(!isMatch){
+        return res.status(401).json({error:'Invalid email or password'});
+    }
+    const token = user.generateAuthToken();
+    res.status(200).json({token,user});
 }
