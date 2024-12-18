@@ -3,6 +3,7 @@ const router = express.Router();
 // we are using a express validator to validate that incomming data is correct or not
 const {body} = require('express-validator')
 const userController = require('../controllers/user.controllers')
+const authmiddleware = require('../middleware/auth.middleware')
 
 //register user 
 router.post('/register',[
@@ -19,6 +20,11 @@ router.post('/login',[
     body('password').isLength({min:6}).withMessage('password must be 6 character in length')
 ],userController.loginUser)
 
+// get user profile
+router.get('/profile',authmiddleware.authUser,userController.getUserProfile)
+
+
+module.exports = router
 
 
 
