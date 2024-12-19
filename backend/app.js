@@ -4,8 +4,15 @@ const express = require("express");
 const app = express();
 const cors = require('cors');
 const connectToDB = require('./database/dbConfig');
+const cookieParser = require('cookie-parser'); 
+
+
+// routers
 const userRoutes = require('./routes/user.routes');
-const cookieParser = require('cookie-parser'); // Correct spelling
+const captainRoutes = require('./routes/captain.routes');
+
+
+
 
 connectToDB();
 
@@ -18,6 +25,9 @@ app.get('/', (req, res) => {
     res.send("Hello from uber");
 });
 
+
+// routes 
 app.use('/users', userRoutes);
+app.use('/captains', captainRoutes);
 
 module.exports = app;

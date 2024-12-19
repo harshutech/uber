@@ -102,3 +102,6 @@ Logout the current user and blacklist the token provided in cookie or headers
 ### Authentication
 
 Requires a valid JWT token in the Authorization header or cookie:
+
+
+
