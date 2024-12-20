@@ -1,20 +1,35 @@
 import React, { useState } from "react";
 import {Link} from "react-router-dom";
+import { UserDataContext } from "../context/UserContext";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const UserLogin = () => {
     // useState to hold the email and password of the user and update them 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [userData, setUserData] = useState({})
+    // const [userData, setUserData] = useState({})
+
+    const navigate = useNavigate();
+
+    const { user, setUser } = React.useContext(UserDataContext);
 
     // function to submit the form to the backend
     const submitHandler = async (e) => {
         e.preventDefault();
-        setUserData({
+
+        const userData ={
             email: email,
             password: password
-        });
-        // console.log(userData);
+        }
+
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, userData);
+        if(response.status === 200 ){
+            const data = response.data;
+            setUser(data.user);
+            localStorage.setItem('token',data.token);
+            navigate('/home');
+        }
         
         setEmail('');
         setPassword('');
