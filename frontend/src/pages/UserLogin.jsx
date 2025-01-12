@@ -44,7 +44,7 @@ const UserLogin = () => {
       <form onSubmit={(e)=>{
         submitHandler(e);
       }}>
-        
+          <h2 className="flex justify-center font-bold text-lg mb-5">User login</h2>
         <h3 className="font-medium mb-3">What's your email</h3>
         <input
         className="bg-[#eeeeee] mb-7 rounded px-4 py-2 border w-full text-sm placeholder:text-gray-400"

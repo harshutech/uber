@@ -12,7 +12,6 @@ const UserSignup = () => {
   const [lastName, setLastname] = useState("");
   // const [userData, setUserData] = useState({});
 
-
   const navigate = useNavigate();
 
   const { user, setUser } = React.useContext(UserDataContext);
@@ -33,7 +32,7 @@ const UserSignup = () => {
     if(response.status === 201 ){
       const data = response.data;
       setUser(data.user);
-      localStorage.setItems('token',data.token);
+      localStorage.setItem('token',data.token);
       navigate('/home');
     }
 
