@@ -1,0 +1,45 @@
+services:
+  server:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules  # Prevent overwriting node_modules
+    env_file:
+      - ./backend/.env  # Load environment variables
+    environment:
+      - DB_CONNECT=mongodb://mongo:27017/uberdb  # Override DB_CONNECT without changing code
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  client:
+    build: ./frontend
+    ports:
+      - "5173:5173"  # Updated to 5137
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_BASE_URL=http://localhost:3000 
+    depends_on:
+      - server
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  mongo-data:

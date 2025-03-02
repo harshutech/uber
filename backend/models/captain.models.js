@@ -60,15 +60,9 @@ const captainSchema = new mongoose.Schema({
     },
     
     location: {
-        lat: {
-            type: Number,
-
-        },
-        long: {
-            type: Number,
-
-        },
-    }
+        type: { type: String, enum: ["Point"], required: true, default: "Point" },
+        coordinates: { type: [Number], required: true }, // [longitude, latitude]
+      },
 })
 
 captainSchema.methods.generateAuthToken = function(){

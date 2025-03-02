@@ -1,35 +1,35 @@
-import React from 'react'
+import React from 'react';
 
-export const LocationPannel = (props) => {
-    
+const LocationPannel = ({ suggestions, setVehiclePanel, setPanelOpen, setPickup, setDestination, activeField }) => {
 
-    // sample array of location
-    const locations = [
-        "Rajwada Palace",
-        "Sarafa Bazaar",
-        "Patalpani Waterfall",
-        "Khajrana Ganesh Temple",
-        "Indore Zoo (Kamla Nehru Prani Sangrahalaya)",
-        "Chhappan Dukan",
-        "Annapurna Temple",
-      ];
-      
-
-  return (
-    <div>
-        {
-            locations.map(function(elem,idx){
-
-                return <div key={idx} onClick={()=>{
-                    props.setvehicalPannel(true)
-                    props.setpannelopen(false)
-                }} className='flex items-center justify-start my-3 border-white active:border-black border-2 rounded-xl m-2'>
-                <h2 className='bg-[#eee] h-9 flex items-center justify-center w-10 rounded-full'><i className="ri-map-pin-range-fill"></i></h2>
-                <h4 className='text-[16px] ml-3'>{elem}</h4>
-            </div>
-            })
+    const handleSuggestionClick = (suggestion) => {
+        if (activeField === 'pickup') {
+            setPickup(suggestion.description);
+        } else if (activeField === 'destination') {
+            setDestination(suggestion.description);
         }
+        // setVehiclePanel(true);
+        // setPanelOpen(false);
+    };
 
-    </div>
-  )
-}
+    return (
+        <div>
+            {/* Display fetched suggestions */}
+            {suggestions.map((elem, idx) => (
+                <div
+                    key={idx}
+                    onClick={() => handleSuggestionClick(elem)}
+                    className='flex gap-4 border-2 p-3 border-gray-50 active:border-black rounded-xl items-center my-2 justify-start'
+                >
+                    <h2 className='bg-[#eee] h-8 flex items-center justify-center w-12 rounded-full'>
+                        <i className="ri-map-pin-fill"></i>
+                    </h2>
+                    {/* Render the `description` property of the suggestion object */}
+                    <h4 className='font-medium'>{elem.description}</h4>
+                </div>
+            ))}
+        </div>
+    );
+};
+
+export default LocationPannel;

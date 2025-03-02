@@ -7,9 +7,9 @@ const RidePopup = (props) => {
         {/* Close Button */}
         <h5
           className="p-5 absolute top-2 right-5 text-gray-600 cursor-pointer"
-          onClick={()=>{
-            props.setRidePopupPannel(false)
-        }}
+          onClick={() => {
+            props.setRidePopupPannel(false);
+          }}
         >
           <i className="text-xl ri-close-line"></i>
         </h5>
@@ -26,12 +26,17 @@ const RidePopup = (props) => {
             alt="user profile"
           />
 
-          {/* Distance Information */}
-          <div className="bg-gray-100 p-3 rounded-md w-full text-center shadow-sm">
-            <h4 className="text-lg font-medium">
-              Passanger Distance: <span className="text-green-600">{props.distance || "Calculating..."} km</span>
-            </h4>
+          {/* Requestor Details */}
+          <div className="w-full text-center">
+            <h4 className="text-xl font-semibold">{props.ride?.user.fullname.firstname + " " + props.ride?.user.fullname.lastname}</h4>
           </div>
+
+          {/* Distance Information */}
+          {/* <div className="bg-gray-100 p-3 rounded-md w-full text-center shadow-sm">
+            <h4 className="text-lg font-medium">
+              Passanger Distance: <span className="text-green-600">{props.ride?.distance || "Calculating..."} km</span>
+            </h4>
+          </div> */}
 
           {/* Location Details */}
           <div className="w-full">
@@ -39,8 +44,10 @@ const RidePopup = (props) => {
             <div className="flex items-center gap-5 border-b-2 p-2">
               <i className="text-2xl px-2 ri-map-pin-time-fill"></i>
               <div>
-                <h3><b>Pickup Location</b></h3>
-                <p className="text-sm text-gray-600">Los-angeles, California</p>
+                <h3>
+                  <b>Pickup Location</b>
+                </h3>
+                <p className="text-sm text-gray-600">{props.ride?.pickup}</p>
               </div>
             </div>
 
@@ -48,8 +55,10 @@ const RidePopup = (props) => {
             <div className="flex items-center gap-5 border-b-2 p-2">
               <i className="text-2xl px-2 ri-map-pin-user-fill"></i>
               <div>
-                <h3><b>Drop-off Location</b></h3>
-                <p className="text-sm text-gray-600">Ring Road, Indore</p>
+                <h3>
+                  <b>Drop-off Location</b>
+                </h3>
+                <p className="text-sm text-gray-600">{props.ride?.destination}</p>
               </div>
             </div>
 
@@ -57,7 +66,9 @@ const RidePopup = (props) => {
             <div className="flex items-center gap-5 p-2">
               <i className="text-2xl px-2 ri-currency-fill"></i>
               <div>
-                <h3><b>₹ 190.20</b></h3>
+                <h3>
+                  <b>₹ {props.ride?.fare}</b>
+                </h3>
                 <p className="text-sm text-gray-600">Cash, Card</p>
               </div>
             </div>
@@ -69,6 +80,7 @@ const RidePopup = (props) => {
               onClick={() => {
                 props.setconfirmPopupPannel(true);
                 props.setRidePopupPannel(false);
+                props.confirmride();
               }}
               className="w-1/2 bg-green-600 text-white py-3 rounded-full text-lg font-medium hover:bg-green-700 transition"
             >
@@ -76,7 +88,7 @@ const RidePopup = (props) => {
             </button>
             <button
               onClick={() => {
-                // props.setRideIgnored(true);
+                props.setRideIgnored(true);
                 props.setRidePopupPannel(false);
               }}
               className="w-1/2 bg-red-600 text-white py-3 rounded-full text-lg font-medium hover:bg-red-700 transition"
