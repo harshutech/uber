@@ -1,6 +1,7 @@
 services:
   server:
     image: harshpatil20/uber-server:latest  # Use pre-built backend image
+    restart: always
     ports:
       - "3000:3000"
     env_file:
@@ -14,6 +15,7 @@ services:
 
   client:
     image: harshpatil20/uber-client:latest  # Use pre-built frontend image
+    restart: always
     ports:
       - "5173:5173"
     environment:
@@ -25,6 +27,7 @@ services:
 
   mongo:
     image: mongo
+    restart: always
     ports:
       - "27017:27017"
     volumes:
@@ -33,7 +36,7 @@ services:
       - app-network
 
 networks:
-  app-network:
+  app-network:  # Custom network for inter-service communication
 
 volumes:
-  mongo-data:
+  mongo-data:  # Named volume for persistent MongoDB data
