@@ -1,29 +1,23 @@
 services:
   server:
-    build: ./backend
+    image: harshpatil20/uber-server:latest  # Use pre-built backend image
     ports:
       - "3000:3000"
-    volumes:
-      - ./backend:/app
-      - /app/node_modules  # Prevent overwriting node_modules
     env_file:
       - ./backend/.env  # Load environment variables
     environment:
-      - DB_CONNECT=mongodb://mongo:27017/uberdb  # Override DB_CONNECT without changing code
+      - DB_CONNECT=mongodb://mongo:27017/uberdb
     depends_on:
       - mongo
     networks:
       - app-network
 
   client:
-    build: ./frontend
+    image: harshpatil20/uber-client:latest  # Use pre-built frontend image
     ports:
-      - "5173:5173"  # Updated to 5137
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - "5173:5173"
     environment:
-      - VITE_BASE_URL=http://localhost:3000 
+      - VITE_BASE_URL=http://server:3000  # Use service name instead of localhost
     depends_on:
       - server
     networks:
